@@ -3,8 +3,10 @@
 #
 
 # CC
+#编译器是GCC
 CC=gcc
 # Path to parent kernel include files directory
+#
 LIBC_INCLUDE=/usr/include
 # Libraries
 ADDLIB=
