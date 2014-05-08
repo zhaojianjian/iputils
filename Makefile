@@ -44,20 +44,20 @@ WITHOUT_IFADDRS=no
 ARPING_DEFAULT_DEVICE=
 
 # GNU TLS library for ping6 [yes|no|static]
-＃GNU TLS库ping6 [是|否|静态]
+#GNU TLS库ping6 [是|否|静态]
 USE_GNUTLS=yes
 # Crypto library for ping6 
-＃加密库ping6 [共享|静态]
+#加密库ping6 [共享|静态]
 USE_CRYPTO=shared
 # Resolv library for ping6 [yes|static]
 ＃RESOLV库ping6 [是|静态]
 USE_RESOLV=yes
 # ping6 source routing (deprecated by RFC5095) [no|yes|RFC3542]
-＃ping6源路由（由RFC5095不建议使用）[NO | YES | RFC3542]
+#ping6源路由（由RFC5095不建议使用）[NO | YES | RFC3542]
 ENABLE_PING6_RTHDR=no
 
 # rdisc server (-r option) support [no|yes]
-＃RDISC服务器（-r选项）支持[NO | YES]
+#RDISC服务器（-r选项）支持[NO | YES]
 ENABLE_RDISC_SERVER=no
 
 # -------------------------------------
