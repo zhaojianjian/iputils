@@ -229,9 +229,10 @@ tftpd.o tftpsubs.o: tftp.h
 
 # -------------------------------------
 # ninfod
+#生成可执行文件ninfod
 ninfod:
 	@set -e; \
-		if [ ! -f ninfod/Makefile ]; then \#检查是不是存在Makefile文件，不存在就创建
+		if [ ! -f ninfod/Makefile ]; then \#检查是不是存在Makefile普通文件，不存在就创建
 			cd ninfod; \
 			./configure; \
 			cd ..; \
@@ -242,7 +243,7 @@ ninfod:
 # modules / check-kernel are only for ancient kernels; obsolete
 # 内核检查
 check-kernel:
-ifeq ($(KERNEL_INCLUDE),)         #判断内核是否为空：不为空就设置正确内核;
+ifeq ($(KERNEL_INCLUDE),)         #判断内核是否为空;不为空就设置正确内核;
 	@echo "Please, set correct KERNEL_INCLUDE"; false
 else
 	@set -e; \                 #
@@ -280,16 +281,16 @@ snapshot:
 	@if [ x"$(UNAME_N)" != x"pleiades" ]; then echo "Not authorized to advance snapshot"; exit 1; fi
 	@echo "[$(TAG)]" > RELNOTES.NEW
 	@echo >>RELNOTES.NEW
-	@git log --no-merges $(LASTTAG).. | git shortlog >> RELNOTES.NEW
+	@git log --no-merges $(LASTTAG).. | git shortlog >> RELNOTES.NEW #将git log和git shortlog的输出信息重定向到RELOTES.NEW文档里
 	@echo >> RELNOTES.NEW
-	@cat RELNOTES >> RELNOTES.NEW #文档重命名
-	@mv RELNOTES.NEW RELNOTES   #
+	@cat RELNOTES >> RELNOTES.NEW #将内容重定项到RELNOTES.NEW 中去
+	@mv RELNOTES.NEW RELNOTES   #将RELNOTES.NEW文档重命名为RELNOTES
 	@sed -e "s/^%define ssdate .*/%define ssdate $(DATE)/" iputils.spec > iputils.spec.tmp
-	@mv iputils.spec.tmp iputils.spec
-	@echo "static char SNAPSHOT[] = \"$(TAG)\";" > SNAPSHOT.h
-	@$(MAKE) -C doc snapshot
-	@$(MAKE) man
-	@git commit -a -m "iputils-$(TAG)" 
-	@git tag -s -m "iputils-$(TAG)" $(TAG)
-	@git archive --format=tar --prefix=iputils-$(TAG)/ $(TAG) | bzip2 -9 > ../iputils-$(TAG).tar.bz2
+	@mv iputils.spec.tmp iputils.spec #将inputils.spec.tmp重命名为iputils.spec.
+	@echo "static char SNAPSHOT[] = \"$(TAG)\";" > SNAPSHOT.h #重定项技术
+	@$(MAKE) -C doc snapshot #生成snapshot的doc文档。
+	@$(MAKE) man #执行man命令
+	@git commit -a -m "iputils-$(TAG)" #上传文件
+	@git tag -s -m "iputils-$(TAG)" $(TAG) #//创建带有说明的标签，用私钥
+	@git archive --format=tar --prefix=iputils-$(TAG)/ $(TAG) | bzip2 -9 > ../iputils-$(TAG).tar.bz2#打包，提供别人下载
 
