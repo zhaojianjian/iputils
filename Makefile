@@ -13,8 +13,11 @@ LIBC_INCLUDE=/usr/include
 ADDLIB=
 # Linker flags
 #连接标志
+#W1告诉编译器将后面的参数传递给链接器
+#-Wl,-Bstatic告诉链接器使用-Bstatic选项，该选项是告诉链接器，对接下来的-l选项使用静态链接
 LDFLAG_STATIC=-Wl,-Bstatic
 LDFLAG_DYNAMIC=-Wl,-Bdynamic
+#指定加载库
 LDFLAG_CAP=-lcap
 LDFLAG_GNUTLS=-lgnutls-openssl
 LDFLAG_CRYPTO=-lcrypto
@@ -25,7 +28,7 @@ LDFLAG_SYSFS=-lsysfs
 #
 # Options
 #选项
-
+#变量定义，设置开关
 # Capability support (with libcap) [yes|static|no]
 #功能支持（与libcap的）[是|静态|否]
 USE_CAP=yes
@@ -50,7 +53,7 @@ USE_GNUTLS=yes
 #加密库ping6 [共享|静态]
 USE_CRYPTO=shared
 # Resolv library for ping6 [yes|static]
-＃RESOLV库ping6 [是|静态]
+#RESOLV库ping6 [是|静态]
 USE_RESOLV=yes
 # ping6 source routing (deprecated by RFC5095) [no|yes|RFC3542]
 #ping6源路由（由RFC5095不建议使用）[NO | YES | RFC3542]
@@ -63,6 +66,7 @@ ENABLE_RDISC_SERVER=no
 # -------------------------------------
 # What a pity, all new gccs are buggy and -Werror does not work. Sigh.
 # CCOPT=-fno-strict-aliasing -Wstrict-prototypes -Wall -Werror -g
+#-Wstrict-prototypes: 如果函数的声明或定义没有指出参数类型，编译器就发出警告
 CCOPT=-fno-strict-aliasing -Wstrict-prototypes -Wall -g
 CCOPTOPT=-O3
 GLIBCFIX=-D_GNU_SOURCE
@@ -145,8 +149,13 @@ all: $(TARGETS)
 	$(COMPILE.c) $< $(DEF_$(patsubst %.o,%,$@)) -o $@
 $(TARGETS): %: %.o
 	$(LINK.o) $^ $(LIB_$@) $(LDLIBS) -o $@
+#COMPILE.c=$(CC) $(CFLAGS) $(CPPFLAGS) -c
+#$< 依赖目标中的第一个目标名字 
+# $@ 表示目标
+#$^ 所有的依赖目标的集合 
+#在$(patsubst %.o,%,$@ )中，把输入后缀为点o的文件转换为不带后缀的可执行文件
+#LINK.o把.o文件链接在一起的命令行,缺省值是$(CC) $(LDFLAGS) $(TARGET_ARCH)
 
-# -------------------------------------
 # arping
 DEF_arping = $(DEF_SYSFS) $(DEF_CAP) $(DEF_IDN) $(DEF_WITHOUT_IFADDRS)
 LIB_arping = $(LIB_SYSFS) $(LIB_CAP) $(LIB_IDN)
