@@ -3,7 +3,7 @@
 #配置
 
 # CC
-#编译器是GCC
+# 指定编译器是GCC
 CC=gcc
 # Path to parent kernel include files directory
 #路径的父内核头文件目录
@@ -17,7 +17,7 @@ ADDLIB=
 #-Wl,-Bstatic告诉链接器使用-Bstatic选项，该选项是告诉链接器，对接下来的-l选项使用静态链接
 LDFLAG_STATIC=-Wl,-Bstatic
 LDFLAG_DYNAMIC=-Wl,-Bdynamic
-#指定加载库
+#指定加载库 cap函数库、TLS加密函数库、crypto加密解密函数库、idn恒等函数库、resolv函数库、sysfs接口函数库等
 LDFLAG_CAP=-lcap
 LDFLAG_GNUTLS=-lgnutls-openssl
 LDFLAG_CRYPTO=-lcrypto
