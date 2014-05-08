@@ -1,16 +1,18 @@
 #
 # Configuration
-#
+#配置
 
 # CC
 #编译器是GCC
 CC=gcc
 # Path to parent kernel include files directory
-#
+#路径的父内核头文件目录
 LIBC_INCLUDE=/usr/include
 # Libraries
+#库
 ADDLIB=
 # Linker flags
+#连接标志
 LDFLAG_STATIC=-Wl,-Bstatic
 LDFLAG_DYNAMIC=-Wl,-Bdynamic
 LDFLAG_CAP=-lcap
@@ -22,30 +24,40 @@ LDFLAG_SYSFS=-lsysfs
 
 #
 # Options
-#
+#选项
 
 # Capability support (with libcap) [yes|static|no]
+#功能支持（与libcap的）[是|静态|否]
 USE_CAP=yes
 # sysfs support (with libsysfs - deprecated) [no|yes|static]
+#sysfs的支持（与libsysfs  - 不建议使用）[NO | YES |静态]
 USE_SYSFS=no
 # IDN support (experimental) [no|yes|static]
+#IDN支持（实验）[NO | YES |静态]
 USE_IDN=no
 
 # Do not use getifaddrs [no|yes|static]
+#不要使用getifaddrs [NO | YES |静态]
 WITHOUT_IFADDRS=no
 # arping default device (e.g. eth0) []
+#arping默认设备（例如eth0）[]
 ARPING_DEFAULT_DEVICE=
 
 # GNU TLS library for ping6 [yes|no|static]
+＃GNU TLS库ping6 [是|否|静态]
 USE_GNUTLS=yes
-# Crypto library for ping6 [shared|static]
+# Crypto library for ping6 
+＃加密库ping6 [共享|静态]
 USE_CRYPTO=shared
 # Resolv library for ping6 [yes|static]
+＃RESOLV库ping6 [是|静态]
 USE_RESOLV=yes
 # ping6 source routing (deprecated by RFC5095) [no|yes|RFC3542]
+＃ping6源路由（由RFC5095不建议使用）[NO | YES | RFC3542]
 ENABLE_PING6_RTHDR=no
 
 # rdisc server (-r option) support [no|yes]
+＃RDISC服务器（-r选项）支持[NO | YES]
 ENABLE_RDISC_SERVER=no
 
 # -------------------------------------
