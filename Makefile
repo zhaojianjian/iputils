@@ -30,37 +30,36 @@ LDFLAG_SYSFS=-lsysfs
 #选项
 #变量定义，设置开关
 # Capability support (with libcap) [yes|static|no]
-#功能支持（与libcap的）[是|静态|否]
+# 支持Capability support (with libcap)功能
 USE_CAP=yes
 # sysfs support (with libsysfs - deprecated) [no|yes|static]
-#sysfs的支持（与libsysfs  - 不建议使用）[NO | YES |静态]
+#不支持虚拟文件系统
 USE_SYSFS=no
 # IDN support (experimental) [no|yes|static]
-#IDN支持（实验）[NO | YES |静态]
+#不支持IDN
 USE_IDN=no
 
 # Do not use getifaddrs [no|yes|static]
-#不要使用getifaddrs [NO | YES |静态]
+#不要使用getifaddrs 
 WITHOUT_IFADDRS=no
 # arping default device (e.g. eth0) []
-#arping默认设备（例如eth0）[]
+#arping默认设备（例如eth0）
 ARPING_DEFAULT_DEVICE=
 
 # GNU TLS library for ping6 [yes|no|static]
-#GNU TLS库ping6 [是|否|静态]
+#G
 USE_GNUTLS=yes
 # Crypto library for ping6 
-#加密库ping6 [共享|静态]
-USE_CRYPTO=shared
+#加密库ping6 共享
 # Resolv library for ping6 [yes|static]
-#RESOLV库ping6 [是|静态]
+#RESOLV库ping6 是静态]
 USE_RESOLV=yes
 # ping6 source routing (deprecated by RFC5095) [no|yes|RFC3542]
-#ping6源路由（由RFC5095不建议使用）[NO | YES | RFC3542]
+#不使用ping6源路由
 ENABLE_PING6_RTHDR=no
 
 # rdisc server (-r option) support [no|yes]
-#RDISC服务器（-r选项）支持[NO | YES]
+#不支持RDISC服务器
 ENABLE_RDISC_SERVER=no
 
 # -------------------------------------
@@ -72,7 +71,7 @@ CCOPTOPT=-O3  #顶级优化
 GLIBCFIX=-D_GNU_SOURCE
 DEFINES=
 LDLIB=
-
+#函数库支持动态链接库
 FUNC_LIB = $(if $(filter static,$(1)),$(LDFLAG_STATIC) $(2) $(LDFLAG_DYNAMIC),$(2))
 #判断每个函数库中是否重复包含函数
 
@@ -87,6 +86,7 @@ else
 endif
 
 # USE_RESOLV: LIB_RESOLV
+
 LIB_RESOLV = $(call FUNC_LIB,$(USE_RESOLV),$(LDFLAG_RESOLV))
 
 # USE_CAP:  DEF_CAP, LIB_CAP
@@ -117,11 +117,13 @@ ifneq ($(WITHOUT_IFADDRS),no)
 endif
 
 # ENABLE_RDISC_SERVER: DEF_ENABLE_RDISC_SERVER
+#判断是否使用了
 ifneq ($(ENABLE_RDISC_SERVER),no)
 	DEF_ENABLE_RDISC_SERVER = -DRDISC_SERVER
 endif
 
 # ENABLE_PING6_RTHDR: DEF_ENABLE_PING6_RTHDR
+
 ifneq ($(ENABLE_PING6_RTHDR),no)
 	DEF_ENABLE_PING6_RTHDR = -DPING6_ENABLE_RTHDR
 ifeq ($(ENABLE_PING6_RTHDR),RFC3542)
@@ -130,6 +132,7 @@ endif
 endif
 
 # -------------------------------------
+#配置IPv4 IPv6
 IPV4_TARGETS=tracepath ping clockdiff rdisc arping tftpd rarpd
 IPV6_TARGETS=tracepath6 traceroute6 ping6
 TARGETS=$(IPV4_TARGETS) $(IPV6_TARGETS)
@@ -169,13 +172,18 @@ LIB_arping = $(LIB_SYSFS) $(LIB_CAP) $(LIB_IDN)
 #ifneq为条件语句开始
 ifneq ($(ARPING_DEFAULT_DEVICE),)
 DEF_arping += -DDEFAULT_DEVICE=\"$(ARPING_DEFAULT_DEVICE)\"
+#在$(ARPING_DEFAULT_DEVICE)中存在结尾空格，在这句话中也会被作为makefile需要执行的一部分
 endif
 
+#linux环境下一些实用的网络工具的集合iputils软件包，以下包含的工具：clockdiff， ping / ping6，rarpd，rdisc，tracepath，
+
 # clockdiff
+#测算目的主机和本地主机的系统时间差，clockdiff程序由clockdiff.c文件构成。
 DEF_clockdiff = $(DEF_CAP)
 LIB_clockdiff = $(LIB_CAP)
 
 # ping / ping6
+#测试计算机名和计算机的ip地址，验证与远程计算机的连接。ping程序由ping.c ping6.cping_common.c ping.h 文件构成 
 DEF_ping_common = $(DEF_CAP) $(DEF_IDN)
 DEF_ping  = $(DEF_CAP) $(DEF_IDN) $(DEF_WITHOUT_IFADDRS)
 LIB_ping  = $(LIB_CAP) $(LIB_IDN)
@@ -188,14 +196,17 @@ ping.o ping_common.o: ping_common.h
 ping6.o: ping_common.h in6_flowlabel.h
 
 # rarpd
+#逆地址解析协议的服务端程序，rarpd程序由rarpd.c文件构成
 DEF_rarpd =
 LIB_rarpd =
 
 # rdisc
+#路由器发现守护程序，rdisc程序由rdisc.c文件构成。
 DEF_rdisc = $(DEF_ENABLE_RDISC_SERVER)
 LIB_rdisc =
 
 # tracepath
+#与traceroute功能相似，使用tracepath测试IP数据报文从源主机传到目的主机经过的路由，tracepath程序由tracepath.c tracepath6.c traceroute6.c 文件构成。
 DEF_tracepath = $(DEF_IDN)
 LIB_tracepath = $(LIB_IDN)
 
@@ -208,6 +219,7 @@ DEF_traceroute6 = $(DEF_CAP) $(DEF_IDN)
 LIB_traceroute6 = $(LIB_CAP) $(LIB_IDN)
 
 # tftpd
+#简单文件传送协议TFTP的服务端程序，tftpd程序由tftp.h tftpd.c tftpsubs.c文件构成。
 DEF_tftpd =
 DEF_tftpsubs =
 LIB_tftpd =
