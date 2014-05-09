@@ -190,6 +190,7 @@ LIB_ping  = $(LIB_CAP) $(LIB_IDN)
 DEF_ping6 = $(DEF_CAP) $(DEF_IDN) $(DEF_WITHOUT_IFADDRS) $(DEF_ENABLE_PING6_RTHDR) $(DEF_CRYPTO)
 LIB_ping6 = $(LIB_CAP) $(LIB_IDN) $(LIB_RESOLV) $(LIB_CRYPTO)
 
+#目标文件ping依赖于ping_common.o
 ping: ping_common.o
 ping6: ping_common.o
 ping.o ping_common.o: ping_common.h
@@ -223,7 +224,7 @@ LIB_traceroute6 = $(LIB_CAP) $(LIB_IDN)
 DEF_tftpd =
 DEF_tftpsubs =
 LIB_tftpd =
-
+# 目标文件tftpd依赖于tftpsubs.o
 tftpd: tftpsubs.o
 tftpd.o tftpsubs.o: tftp.h
 
@@ -262,27 +263,28 @@ html:
 	$(MAKE) -C doc html#生成网页格式的帮助文档
 
 clean:
-	@rm -f *.o $(TARGETS)  #删除点o为结尾的目标文件
+	@rm -f *.o $(TARGETS)  #删除目标文件
 	@$(MAKE) -C Modules clean
 	@$(MAKE) -C doc clean
 	@set -e; \
-		if [ -f ninfod/Makefile ]; then \
+		if [ -f ninfod/Makefile ]; then \#如果ninfod目录下存在 Makefile ,进入并读取
 			$(MAKE) -C ninfod clean; \
 		fi
-
-distclean: clean
+#清除生成的文件
+distclean: clean 
 	@set -e; \
 		if [ -f ninfod/Makefile ]; then \
 			$(MAKE) -C ninfod distclean; \
 		fi
 
 # -------------------------------------
-snapshot:
+snapshot:  
+        #判断UNAME_N和pleiades的十六进制是否不等
 	@if [ x"$(UNAME_N)" != x"pleiades" ]; then echo "Not authorized to advance snapshot"; exit 1; fi
-	@echo "[$(TAG)]" > RELNOTES.NEW
+	@echo "[$(TAG)]" > RELNOTES.NEW#将TAG变量里的内容写入RELNOTES.NEW中
 	@echo >>RELNOTES.NEW
 	@git log --no-merges $(LASTTAG).. | git shortlog >> RELNOTES.NEW #将git log和git shortlog的输出信息重定向到RELOTES.NEW文档里
-	@echo >> RELNOTES.NEW
+	@echo >> RELNOTES.NEW 
 	@cat RELNOTES >> RELNOTES.NEW #将内容重定项到RELNOTES.NEW 中去
 	@mv RELNOTES.NEW RELNOTES   #将RELNOTES.NEW文档重命名为RELNOTES
 	@sed -e "s/^%define ssdate .*/%define ssdate $(DATE)/" iputils.spec > iputils.spec.tmp
