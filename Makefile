@@ -142,6 +142,7 @@ LDLIBS=$(LDLIB) $(ADDLIB)
 
 UNAME_N:=$(shell uname -n)
 LASTTAG:=$(shell git describe HEAD | sed -e 's/-.*//')
+# 设置日期格式，%Y/%m/%d
 TODAY=$(shell date +%Y/%m/%d)
 DATE=$(shell date --date $(TODAY) +%Y%m%d)
 TAG:=$(shell date --date=$(TODAY) +s%Y%m%d)
@@ -292,7 +293,7 @@ snapshot:
 	@echo "static char SNAPSHOT[] = \"$(TAG)\";" > SNAPSHOT.h #重定项技术
 	@$(MAKE) -C doc snapshot #生成snapshot的doc文档。
 	@$(MAKE) man #执行man命令
-	@git commit -a -m "iputils-$(TAG)" #上传文件
+	@git commit -a -m "iputils-$(TAG)" #上传修改后的文件;
 	@git tag -s -m "iputils-$(TAG)" $(TAG) #//创建带有说明的标签，用私钥签名。
-	@git archive --format=tar --prefix=iputils-$(TAG)/ $(TAG) | bzip2 -9 > ../iputils-$(TAG).tar.bz2#打包，提供别人下载
+	@git archive --format=tar --prefix=iputils-$(TAG)/ $(TAG) | bzip2 -9 > ../iputils-$(TAG).tar.bz2#从库中压缩文件
 
