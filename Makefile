@@ -260,14 +260,14 @@ man:
 	$(MAKE) -C doc man #生成man帮助手册
 
 html:
-	$(MAKE) -C doc html#生成网页格式的帮助文档
+	$(MAKE) -C doc html #生成网页格式的帮助文档
 
 clean:
 	@rm -f *.o $(TARGETS)  #删除目标文件
 	@$(MAKE) -C Modules clean
 	@$(MAKE) -C doc clean
 	@set -e; \
-		if [ -f ninfod/Makefile ]; then \#如果ninfod目录下存在 Makefile ,进入并读取
+		if [ -f ninfod/Makefile ]; then \  #如果ninfod目录下存在 Makefile ,进入并读取
 			$(MAKE) -C ninfod clean; \
 		fi
 #清除生成的文件
@@ -281,7 +281,7 @@ distclean: clean
 snapshot:  
         #判断UNAME_N和pleiades的十六进制是否不等
 	@if [ x"$(UNAME_N)" != x"pleiades" ]; then echo "Not authorized to advance snapshot"; exit 1; fi
-	@echo "[$(TAG)]" > RELNOTES.NEW#将TAG变量里的内容写入RELNOTES.NEW中
+	@echo "[$(TAG)]" > RELNOTES.NEW #将TAG变量里的内容写入RELNOTES.NEW中
 	@echo >>RELNOTES.NEW
 	@git log --no-merges $(LASTTAG).. | git shortlog >> RELNOTES.NEW #将git log和git shortlog的输出信息重定向到RELOTES.NEW文档里
 	@echo >> RELNOTES.NEW 
