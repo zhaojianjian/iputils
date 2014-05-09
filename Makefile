@@ -233,7 +233,7 @@ tftpd.o tftpsubs.o: tftp.h
 #生成可执行文件ninfod
 ninfod:
 	@set -e; \
-		if [ ! -f ninfod/Makefile ]; then \#检查是不是存在Makefile普通文件，不存在就创建
+		if [ ! -f ninfod/Makefile ]; then \ #检查是不是存在Makefile普通文件，不存在就创建
 			cd ninfod; \
 			./configure; \
 			cd ..; \
@@ -248,12 +248,12 @@ ifeq ($(KERNEL_INCLUDE),)         #判断内核是否为空;不为空就设置�
 	@echo "Please, set correct KERNEL_INCLUDE"; false
 else
 	@set -e; \                 #
-	if [ ! -r $(KERNEL_INCLUDE)/linux/autoconf.h ]; then \#判断autoconf.h 是不是存在的一个普通文件。
+	if [ ! -r $(KERNEL_INCLUDE)/linux/autoconf.h ]; then \ #判断autoconf.h 是不是存在的一个普通文件。
 		echo "Please, set correct KERNEL_INCLUDE"; false; fi
 endif
 
 modules: check-kernel                                      
-	$(MAKE) KERNEL_INCLUDE=$(KERNEL_INCLUDE) -C Modules #指定modules内核编译的路径
+	$(MAKE) KERNEL_INCLUDE=$(KERNEL_INCLUDE) -C Modules  #指定modules内核编译的路径
 
 # -------------------------------------
 man:
