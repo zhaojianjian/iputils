@@ -294,6 +294,6 @@ snapshot:
 	@$(MAKE) -C doc snapshot #生成snapshot的doc文档。
 	@$(MAKE) man #执行man命令
 	@git commit -a -m "iputils-$(TAG)" #上传修改后的文件;
-	@git tag -s -m "iputils-$(TAG)" $(TAG) #//创建带有说明的标签，用私钥签名。
-	@git archive --format=tar --prefix=iputils-$(TAG)/ $(TAG) | bzip2 -9 > ../iputils-$(TAG).tar.bz2#从库中压缩文件
+	@git tag -s -m "iputils-$(TAG)" $(TAG) #创建带有说明的标签，用私钥签名。
+	@git archive --format=tar --prefix=iputils-$(TAG)/ $(TAG) | bzip2 -9 > ../iputils-$(TAG).tar.bz2 #从库中压缩文件
 
